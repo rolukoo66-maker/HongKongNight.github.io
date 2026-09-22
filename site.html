@@ -114,7 +114,7 @@
           <input class="progress" id="progress" type="range" min="0" max="100" value="0" />
           <input class="volume" id="volume" type="range" min="0" max="1" step="0.01" value="0.65" />
         </div>
-        <audio id="bgm" preload="metadata" loop><source src="hongkong-night.mp3" type="audio/mpeg"></audio>
+        <video id="bgm" preload="metadata" loop playsinline style="display:none"><source src="hongkong-night.mp4" type="video/mp4"></video>
       </div>
     </div>
   </section>
@@ -155,7 +155,7 @@
   <footer>九龍殘夢 · 第一夜 — 어두운 밤을 떠도는 사람들 · 2008 HONG KONG</footer>
   <script>
     const audio=document.getElementById('bgm'),playBtn=document.getElementById('playBtn'),progress=document.getElementById('progress'),volume=document.getElementById('volume');
-    playBtn.addEventListener('click',async()=>{if(audio.paused){try{await audio.play();playBtn.textContent='Ⅱ'}catch(e){alert('브라우저가 오디오 재생을 차단했습니다. 다시 한 번 재생 버튼을 눌러 주세요.')}}else{audio.pause();playBtn.textContent='▶'}});
+    playBtn.addEventListener('click',async()=>{if(audio.paused){try{await audio.play();playBtn.textContent='Ⅱ'}catch(e){alert('브라우저가 재생을 차단했습니다. 다시 한 번 재생 버튼을 눌러 주세요.')}}else{audio.pause();playBtn.textContent='▶'}});
     audio.addEventListener('timeupdate',()=>{if(audio.duration)progress.value=(audio.currentTime/audio.duration)*100});
     progress.addEventListener('input',()=>{if(audio.duration)audio.currentTime=(progress.value/100)*audio.duration});
     volume.addEventListener('input',()=>{audio.volume=volume.value});audio.volume=volume.value;
