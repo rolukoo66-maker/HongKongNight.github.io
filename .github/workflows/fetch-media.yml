@@ -1,0 +1,38 @@
+name: Fetch site media
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/fetch-media.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-media:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download entry image
+        run: |
+          curl -L --fail --retry 3 'https://d2jqrm6oza8nb6.cloudfront.net/datasets/34600eb3-2688-4312-8530-9e6d3f796b6f.jpg?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiZTEzMzk0NDc0NjNlYzg1ZiIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MDE4OTg5NX0.iNOmOqBviuAqgX3cPQ9t7thlb_Oju70rvxafDFSUW0M' -o entry.jpg
+
+      - name: Download Hong Kong Night audio-video container
+        run: |
+          curl -L --fail --retry 3 'https://d2jqrm6oza8nb6.cloudfront.net/datasets/26e8fc77-bb28-4638-8076-893141022bd7.mp4?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiZjYzZjg2NmI1OWM5M2M2MCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MDE3NzUxNX0.m4NczLkkwkJ-_3u6Z5LbL0Y8TSUy6Rv6OU87Bn3uZMM' -o hongkong-night.mp4
+
+      - name: Commit media
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add entry.jpg hongkong-night.mp4
+          if git diff --cached --quiet; then
+            echo "No media changes"
+          else
+            git commit -m "Add site media"
+            git push
+          fi
